@@ -1,0 +1,34 @@
+version: '3.3'
+services: 
+  db:
+    image: mysql:5.7
+    container_name: bancodDado
+    volumes:
+    - db_data_caralho:/var/lib/mysql # db_data, vai ser o lugar onde os dados de /var/lib/mysql vao estar salvos.
+    restart: unless-stopped
+    environment: 
+     MYSQL_ROOT_PASSWORD: word@press
+     MYSQL_DATABASE: wordpress
+     MYSQL_USER: wordpress
+     MYSQL_PASSWORD: abc@123
+
+  wordpress:
+
+    depends_on:
+     - db
+    image: wordpress:latest
+    container_name: worder
+    volumes: 
+    - wordpress_file:/var/www/html
+    ports: 
+    - "8000:80"
+    restart: unless-stopped
+    environment: 
+     WORDPRESS_DB_HOST: db:3306
+     WORDPRESS_DB_USER: wordpress
+     WORDPRESS_DB_PASSWORD: abc@123
+
+  
+volumes: 
+  wordpress_file:
+  db_data_caralho:
